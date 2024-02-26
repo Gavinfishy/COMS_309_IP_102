@@ -1,0 +1,283 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ChartService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.Chart</a>
+</div>
+
+<h1>Coverage Summary for Class: ChartService (application.Chart)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChartService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98%
+  </span>
+  <span class="absValue">
+    (50/51)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ChartService$MockitoMock$2098703020</td>
+  </tr>
+  <tr>
+    <td class="name">ChartService$MockitoMock$2098703020$auxiliary$4426aOUV</td>
+  </tr>
+  <tr>
+    <td class="name">ChartService$MockitoMock$2098703020$auxiliary$5swHD0VW</td>
+  </tr>
+  <tr>
+    <td class="name">ChartService$MockitoMock$2098703020$auxiliary$oOjYMToS</td>
+  </tr>
+  <tr>
+    <td class="name">ChartService$MockitoMock$2098703020$auxiliary$P5TuL2Ba</td>
+  </tr>
+  <tr>
+    <td class="name">ChartService$Pair</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.2%
+  </span>
+  <span class="absValue">
+    (55/56)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.Chart;
+&nbsp;
+&nbsp;import java.awt.*;
+&nbsp;import application.Users.User;
+&nbsp;import application.Users.UserRepository;
+&nbsp;import org.jfree.chart.ChartFactory;
+&nbsp;import org.jfree.chart.JFreeChart;
+&nbsp;import org.jfree.chart.plot.CategoryPlot;
+&nbsp;import org.jfree.chart.plot.PlotOrientation;
+&nbsp;import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+&nbsp;import org.jfree.data.category.DefaultCategoryDataset;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import application.Workout.Workout;
+&nbsp;import application.Workout.WorkoutRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import java.text.SimpleDateFormat;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class ChartService {
+&nbsp;    @Autowired
+&nbsp;    private UserRepository userRepository;
+&nbsp;    @Autowired
+&nbsp;    private WorkoutRepository workoutRepository;
+&nbsp;
+<b class="fc">&nbsp;    public ChartService(UserRepository userRepository, WorkoutRepository workoutRepository) {</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+<b class="fc">&nbsp;        this.workoutRepository = workoutRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Workout&gt; getWorkoutsForExercise(String userName, String exerciseName) {
+<b class="fc">&nbsp;        User user = userRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        if (user == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;User not found&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return workoutRepository.findByUserNameAndExerciseName(userName, exerciseName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public JFreeChart getExerciseProgressChart(String userName, String exerciseName) {
+<b class="fc">&nbsp;        System.out.println(userName);</b>
+<b class="fc">&nbsp;        System.out.println(exerciseName);</b>
+<b class="fc">&nbsp;        List&lt;Workout&gt; workouts = getWorkoutsForExercise(userName, exerciseName);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;PLEASE PRINT&quot;);</b>
+<b class="fc">&nbsp;        Map&lt;String, Pair&lt;Double, Integer&gt;&gt; dateWeights = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        SimpleDateFormat sdf = new SimpleDateFormat(&quot;MM/dd/yy&quot;);</b>
+<b class="fc">&nbsp;        for (Workout workout : workouts) {</b>
+<b class="fc">&nbsp;            if (workout.getDateLogged() != null) {</b>
+<b class="fc">&nbsp;                String date = sdf.format(workout.getDateLogged());</b>
+<b class="fc">&nbsp;                double weight = workout.getActualWeight();</b>
+<b class="fc">&nbsp;                if (dateWeights.containsKey(date)) {</b>
+<b class="fc">&nbsp;                    Pair&lt;Double, Integer&gt; pair = dateWeights.get(date);</b>
+<b class="fc">&nbsp;                    dateWeights.put(date, new Pair&lt;&gt;(pair.getKey() + weight, pair.getValue() + 1));</b>
+<b class="fc">&nbsp;                } else {</b>
+<b class="fc">&nbsp;                    dateWeights.put(date, new Pair&lt;&gt;(weight, 1));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        DefaultCategoryDataset dataset = new DefaultCategoryDataset();</b>
+<b class="fc">&nbsp;        for (Map.Entry&lt;String, Pair&lt;Double, Integer&gt;&gt; entry : dateWeights.entrySet()) {</b>
+<b class="fc">&nbsp;            double averageWeight = entry.getValue().getKey() / entry.getValue().getValue();</b>
+<b class="fc">&nbsp;            dataset.addValue(averageWeight, &quot;Weight&quot;, entry.getKey());</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        JFreeChart chart = ChartFactory.createLineChart(</b>
+&nbsp;                exerciseName,
+&nbsp;                &quot;Date&quot;,
+&nbsp;                &quot;Weight&quot;,
+&nbsp;                dataset,
+&nbsp;                PlotOrientation.VERTICAL,
+&nbsp;                true,
+&nbsp;                true,
+&nbsp;                false
+&nbsp;        );
+<b class="fc">&nbsp;        getLineAndShapeRenderer(chart);</b>
+<b class="fc">&nbsp;        return chart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void combineDataset(DefaultCategoryDataset dataset1, DefaultCategoryDataset dataset2) {
+<b class="fc">&nbsp;        for (int i = 0; i &lt; dataset2.getRowCount(); i++) {</b>
+<b class="fc">&nbsp;            for (int j = 0; j &lt; dataset2.getColumnCount(); j++) {</b>
+<b class="fc">&nbsp;                Number existingValue = null;</b>
+<b class="fc">&nbsp;                if (dataset1.getColumnIndex(dataset2.getColumnKey(j)) != -1) {</b>
+<b class="fc">&nbsp;                    existingValue = dataset1.getValue(dataset2.getRowKey(i), dataset2.getColumnKey(j));</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Number newValue = dataset2.getValue(i, j);</b>
+<b class="fc">&nbsp;                if (existingValue != null) {</b>
+<b class="fc">&nbsp;                    newValue = (existingValue.doubleValue() + newValue.doubleValue()) / 2;</b>
+&nbsp;                }
+<b class="fc">&nbsp;                dataset1.addValue(newValue, dataset2.getRowKey(i), dataset2.getColumnKey(j));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static JFreeChart createChart(DefaultCategoryDataset dataset, String exerciseName) {
+<b class="fc">&nbsp;        JFreeChart chart = ChartFactory.createLineChart(</b>
+&nbsp;                exerciseName,
+&nbsp;                &quot;Date&quot;,
+&nbsp;                &quot;Weight&quot;,
+&nbsp;                dataset,
+&nbsp;                PlotOrientation.VERTICAL,
+&nbsp;                true,
+&nbsp;                true,
+&nbsp;                false
+&nbsp;        );
+<b class="fc">&nbsp;        getLineAndShapeRenderer(chart);</b>
+<b class="fc">&nbsp;        return chart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private static void getLineAndShapeRenderer(JFreeChart chart) {
+<b class="fc">&nbsp;        CategoryPlot plot = (CategoryPlot) chart.getPlot();</b>
+<b class="fc">&nbsp;        chart.setBackgroundPaint(Color.white);</b>
+<b class="fc">&nbsp;        LineAndShapeRenderer renderer = new LineAndShapeRenderer();</b>
+<b class="fc">&nbsp;        renderer.setSeriesPaint(0, Color.MAGENTA);</b>
+<b class="fc">&nbsp;        renderer.setSeriesStroke(0, new BasicStroke(2.0f));</b>
+<b class="fc">&nbsp;        renderer.setSeriesLinesVisible(0, true);</b>
+<b class="fc">&nbsp;        renderer.setSeriesShapesVisible(0, true);</b>
+<b class="fc">&nbsp;        plot.setRenderer(renderer);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static class Pair&lt;K, V&gt; {
+&nbsp;        private K key;
+&nbsp;        private V value;
+&nbsp;
+<b class="fc">&nbsp;        public Pair(K key, V value) {</b>
+<b class="fc">&nbsp;            this.key = key;</b>
+<b class="fc">&nbsp;            this.value = value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public K getKey() {
+<b class="fc">&nbsp;            return key;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public V getValue() {
+<b class="fc">&nbsp;            return value;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>

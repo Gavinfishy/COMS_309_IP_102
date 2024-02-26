@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GymRat</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.GymRat</a>
+</div>
+
+<h1>Coverage Summary for Class: GymRat (application.GymRat)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GymRat</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.8%
+  </span>
+  <span class="absValue">
+    (15/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GymRat$HibernateProxy$EcKEBJZ1</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.8%
+  </span>
+  <span class="absValue">
+    (15/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.GymRat;
+&nbsp;
+&nbsp;import application.Exercise.Exercise;
+&nbsp;import application.Users.User;
+&nbsp;import application.Workout.Workout;
+&nbsp;import javax.persistence.*;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class GymRat {
+&nbsp;    @Id
+&nbsp;    private String userName;
+&nbsp;    private int height;
+&nbsp;    private int weight;
+&nbsp;//    @OneToMany(mappedBy = &quot;userName&quot;)
+&nbsp;//    private List&lt;Workout&gt; workoutHistory;
+&nbsp;    @OneToOne(mappedBy = &quot;gymRat&quot;)
+&nbsp;    private User user;
+&nbsp;
+<b class="fc">&nbsp;    public GymRat(String userName) {</b>
+<b class="fc">&nbsp;        this.userName = userName;</b>
+<b class="fc">&nbsp;        this.height = 0;</b>
+<b class="fc">&nbsp;        this.weight = 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    public GymRat(String userName, int height, int weight) {
+&nbsp;//        this.userName = userName;
+&nbsp;//        this.height = height;
+&nbsp;//        this.weight = weight;
+&nbsp;//    }
+&nbsp;
+<b class="fc">&nbsp;    public GymRat() {</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUserName() {
+<b class="fc">&nbsp;        return userName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getHeight() {
+<b class="fc">&nbsp;        return height;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setHeight(int height) {
+<b class="fc">&nbsp;        this.height = height;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getWeight() {
+<b class="fc">&nbsp;        return weight;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setWeight(int weight) {
+<b class="fc">&nbsp;        this.weight = weight;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Workout&gt; getWorkoutHistory() {
+<b class="fc">&nbsp;        return user.getWorkoutHistory();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Workout getWorkout(String workoutName) {
+<b class="fc">&nbsp;        for (Workout workout : this.getWorkoutHistory()) {</b>
+<b class="fc">&nbsp;            if (workout.getWorkoutName().equals(workoutName)) {</b>
+<b class="fc">&nbsp;                return workout;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>

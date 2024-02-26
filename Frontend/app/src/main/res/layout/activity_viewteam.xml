@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_bg">
+
+    <View
+        android:id="@+id/viewTeamBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/ViewTeamTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Team"
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="540dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/black_border"
+        app:layout_constraintBottom_toTopOf="@id/backToHomeViewTeam"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamNameViewTeam"
+        app:layout_constraintVertical_bias="0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="10dp"
+            android:id="@+id/recycler_view_team"
+            android:layout_width="match_parent"
+            android:clipToPadding="false"
+            android:padding="20dp"
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_height="510dp"/>
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/backToHomeViewTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="120dp"
+        android:height="60dp"
+        android:background="@drawable/button_bg"
+        android:text="Back To Home"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953" />
+
+    <TextView
+        android:id="@+id/teamNameViewTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ViewTeamTitleText"
+        app:layout_constraintVertical_bias="0.056" />
+</androidx.constraintlayout.widget.ConstraintLayout>

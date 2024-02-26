@@ -1,0 +1,9 @@
+application\getChartSystemTest.class
+application\AnnounceServerTest.class
+application\AthleteSystemTest.class
+application\GymRatSystemTest.class
+application\CoachSystemTest.class
+application\ChartSystemTest.class
+application\UserSystemTest.class
+application\TeamSystemTest.class
+application\ExerciseSystemTest.class

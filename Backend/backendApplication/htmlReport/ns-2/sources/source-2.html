@@ -1,0 +1,264 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AthleteController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.Athlete</a>
+</div>
+
+<h1>Coverage Summary for Class: AthleteController (application.Athlete)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AthleteController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.4%
+  </span>
+  <span class="absValue">
+    (37/38)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$0jj1eAqj</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$6aO0yC7L</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$93TxL8J1</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$cbWRKEgF</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$CddalF6p</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$JaizLLfY</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$k9K0rxP4</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$Qejpolta</td>
+  </tr>
+  <tr>
+    <td class="name">AthleteController$MockitoMock$888380473$auxiliary$rPRa6inJ</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.4%
+  </span>
+  <span class="absValue">
+    (37/38)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.Athlete;
+&nbsp;
+&nbsp;import application.Team.Team;
+&nbsp;import application.Team.TeamRepository;
+&nbsp;import application.Workout.Workout;
+&nbsp;import application.Workout.WorkoutRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class AthleteController {</b>
+&nbsp;    @Autowired
+&nbsp;    AthleteRepository athleteRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    TeamRepository teamRepository;
+&nbsp;    @Autowired
+&nbsp;    WorkoutRepository workoutRepository;
+<b class="fc">&nbsp;    private final String success = &quot;{\&quot;message\&quot;:\&quot;success\&quot;}&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;    private final String failure = &quot;{\&quot;message\&quot;:\&quot;failure\&quot;}&quot;;</b>
+&nbsp;
+&nbsp;//    @GetMapping(path = &quot;/athletes&quot;)
+&nbsp;//    List&lt;Athlete&gt; getAllAthletes() {
+&nbsp;//        return athleteRepository.findAll();
+&nbsp;//    }
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/athletes/{userName}&quot;)
+&nbsp;    Athlete getAthleteByUserName(@PathVariable String userName) {
+<b class="fc">&nbsp;        return athleteRepository.findByUserName(userName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/athletes/{userName}/workoutHistory&quot;)
+&nbsp;    public List&lt;Workout&gt; getWorkoutHistory(@PathVariable String userName) {
+<b class="fc">&nbsp;        Athlete athlete = athleteRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        if (athlete != null) {</b>
+<b class="fc">&nbsp;            return athlete.getWorkoutHistory();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Athlete not found&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PostMapping(path = &quot;/athletes&quot;)
+&nbsp;//    String createAthlete(@RequestBody Athlete athlete) {
+&nbsp;//        if (athlete == null) {
+&nbsp;//            return failure;
+&nbsp;//        }
+&nbsp;//        athleteRepository.save(athlete);
+&nbsp;//        return success;
+&nbsp;//    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/athletes/logWorkout&quot;)
+&nbsp;    public void logWorkout(@RequestBody Workout workoutInput) {
+<b class="fc">&nbsp;        Workout workout = workoutRepository.findByWorkoutName(workoutInput.getWorkoutName());</b>
+<b class="fc">&nbsp;        if (workout != null) {</b>
+<b class="fc">&nbsp;            workout.logWorkout(workoutInput.getActualReps(), workoutInput.getActualWeight());</b>
+<b class="fc">&nbsp;            workoutRepository.save(workout);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(path = &quot;/athletes/setHeightWeight&quot;)
+&nbsp;    public Athlete setHeightWeight(@RequestBody Athlete request) {
+<b class="fc">&nbsp;        String userName = request.getUserName();</b>
+<b class="fc">&nbsp;        if (userName == null) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Athlete athlete = athleteRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        athlete.setHeight(request.getHeight());</b>
+<b class="fc">&nbsp;        athlete.setWeight(request.getWeight());</b>
+<b class="fc">&nbsp;        athleteRepository.save(athlete);</b>
+<b class="fc">&nbsp;        return athleteRepository.findByUserName(userName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ResponseBody
+&nbsp;    @PutMapping(path = &quot;/athlete/joinTeam/{userName}/{teamName}/{athleteInviteId}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; joinTeam(@PathVariable String userName, @PathVariable String teamName, @PathVariable int athleteInviteId) {
+<b class="fc">&nbsp;        Team team = teamRepository.findByTeamName(teamName);</b>
+<b class="fc">&nbsp;        Athlete athlete = athleteRepository.findByUserName(userName);</b>
+&nbsp;
+<b class="fc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (athleteInviteId == team.getAthleteInviteId()){</b>
+<b class="fc">&nbsp;            athlete.setTeamName(teamName);</b>
+<b class="fc">&nbsp;            athleteRepository.save(athlete);</b>
+<b class="fc">&nbsp;            response.put(&quot;teamName&quot;, athlete.getTeamName());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        response.put(&quot;isValid&quot;, &quot;True&quot;);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;Object&gt;(response, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(path = &quot;/athlete/leaveTeam/{userName}&quot;)
+&nbsp;    @ResponseBody
+&nbsp;    public ResponseEntity&lt;Object&gt; leaveTeam(@PathVariable String userName) {
+<b class="fc">&nbsp;        Athlete athlete = athleteRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        athlete.setTeamName(null);</b>
+<b class="fc">&nbsp;        athleteRepository.save(athlete);</b>
+&nbsp;
+<b class="fc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        response.put(&quot;teamName&quot;, athlete.getTeamName());</b>
+<b class="fc">&nbsp;        response.put(&quot;isValid&quot;, &quot;True&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new ResponseEntity&lt;Object&gt;(response, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;//    @DeleteMapping(path = &quot;/athletes/{userName}&quot;)
+&nbsp;//    String deleteAthlete(@PathVariable String userName) {
+&nbsp;//        athleteRepository.deleteByUserName(userName);
+&nbsp;//        return success;
+&nbsp;//    }
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/athletes/getWorkout/{userName}/{workoutName}&quot;)
+&nbsp;    Workout getWorkout(@PathVariable String userName, @PathVariable String workoutName) {
+<b class="fc">&nbsp;        Athlete athlete = athleteRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        return athlete.getWorkout(workoutName);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>

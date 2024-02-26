@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Team</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.Team</a>
+</div>
+
+<h1>Coverage Summary for Class: Team (application.Team)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Team</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (16/18)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Team$HibernateProxy$orDu1deR</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (16/18)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.Team;
+&nbsp;
+&nbsp;import application.Athlete.Athlete;
+&nbsp;import application.Coach.Coach;
+&nbsp;import application.Users.User;
+&nbsp;import application.Users.UserRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;
+&nbsp;import javax.persistence.*;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Team {
+&nbsp;    private int athleteInviteId;
+&nbsp;    private int coachInviteId;
+&nbsp;    @Id
+&nbsp;    private String teamName;
+<b class="fc">&nbsp;    @OneToMany(mappedBy = &quot;team&quot;, fetch = FetchType.EAGER)</b>
+&nbsp;    private Set&lt;Coach&gt; coaches = new HashSet&lt;&gt;();
+<b class="fc">&nbsp;    @OneToMany(mappedBy = &quot;team&quot;, fetch = FetchType.EAGER)</b>
+&nbsp;    private Set&lt;Athlete&gt; athletes = new HashSet&lt;&gt;();
+&nbsp;
+<b class="fc">&nbsp;    @ElementCollection(fetch = FetchType.EAGER)</b>
+&nbsp;    private List&lt;String&gt; announcements = new ArrayList&lt;&gt;();
+&nbsp;
+&nbsp;
+&nbsp;//    public Team(String teamName, Coach coach, int athleteInviteId, int coachInviteId) {
+&nbsp;//        this.teamName = teamName;
+&nbsp;//        this.athleteInviteId = athleteInviteId;
+&nbsp;//        this.coachInviteId = coachInviteId;
+&nbsp;//    }
+&nbsp;
+<b class="nc">&nbsp;    public Team(String teamName) {</b>
+<b class="nc">&nbsp;        this.teamName = teamName;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Team() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addAnnouncement(String announcement) {
+<b class="fc">&nbsp;        this.announcements.add(announcement);</b>
+<b class="fc">&nbsp;        if(this.announcements.size() &gt; 3) {</b>
+<b class="fc">&nbsp;            this.announcements.remove(0);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getAthleteInviteId() {
+<b class="fc">&nbsp;        return athleteInviteId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getCoachInviteId() {
+<b class="fc">&nbsp;        return coachInviteId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getTeamName() {
+<b class="fc">&nbsp;        return teamName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAthleteInviteId(int athleteInviteId) {
+<b class="fc">&nbsp;        this.athleteInviteId = athleteInviteId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCoachInviteId(int coachInviteId) {
+<b class="fc">&nbsp;        this.coachInviteId = coachInviteId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTeamName(String teamName) {
+<b class="fc">&nbsp;        this.teamName = teamName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;Coach&gt; getCoaches() {
+<b class="fc">&nbsp;        return coaches;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;Athlete&gt; getAthletes() {
+<b class="fc">&nbsp;        return athletes;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;String&gt; getAnnouncements() {
+<b class="fc">&nbsp;        return announcements;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>

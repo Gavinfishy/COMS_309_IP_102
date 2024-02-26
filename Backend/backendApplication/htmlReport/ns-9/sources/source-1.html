@@ -1,0 +1,255 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AnnounceServer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.Websockets</a>
+</div>
+
+<h1>Coverage Summary for Class: AnnounceServer (application.Websockets)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnnounceServer</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.Websockets;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Hashtable;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import javax.websocket.OnClose;
+&nbsp;import javax.websocket.OnError;
+&nbsp;import javax.websocket.OnMessage;
+&nbsp;import javax.websocket.OnOpen;
+&nbsp;import javax.websocket.Session;
+&nbsp;import javax.websocket.server.PathParam;
+&nbsp;import javax.websocket.server.ServerEndpoint;
+&nbsp;import application.Team.Team;
+&nbsp;import application.Team.TeamRepository;
+&nbsp;import application.Users.User;
+&nbsp;import application.Users.UserRepository;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.context.annotation.Lazy;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;@ServerEndpoint(&quot;/announce/{team}/{userName}&quot;)
+&nbsp;@Component
+&nbsp;@Lazy
+<b class="nc">&nbsp;public class AnnounceServer {</b>
+<b class="nc">&nbsp;    private static Map &lt; Session, String &gt; sessionUserNameMap = new Hashtable &lt; &gt; ();</b>
+<b class="nc">&nbsp;    private static Map &lt; String, Session &gt; userNameSessionMap = new Hashtable &lt; &gt; ();</b>
+<b class="nc">&nbsp;    private static Map &lt; Session, String &gt; sessionTeamMap = new Hashtable&lt; &gt;();</b>
+<b class="nc">&nbsp;    private final Logger logger = LoggerFactory.getLogger(AnnounceServer.class);</b>
+&nbsp;
+<b class="nc">&nbsp;    private final UserRepository userRepository = SpringContext.getBean(UserRepository.class);</b>
+&nbsp;
+<b class="nc">&nbsp;    private final TeamRepository teamRepository = SpringContext.getBean(TeamRepository.class);</b>
+&nbsp;    /**
+&nbsp;     * @param session
+&nbsp;     * @param team
+&nbsp;     * @param userName
+&nbsp;     * @throws IOException
+&nbsp;     */
+&nbsp;    @OnOpen
+&nbsp;    public void onOpen(Session session, @PathParam(&quot;team&quot;) String team, @PathParam(&quot;userName&quot;) String userName) throws IOException {
+<b class="nc">&nbsp;        if (userName == null || team == null) {</b>
+&nbsp;//            System.out.println(&quot;Username or team is null. Username:&quot;  + userName + &quot;, Team: &quot; + team);
+<b class="nc">&nbsp;            session.close();</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;//        System.out.println(userName + &quot; &quot; + team + &quot; &quot; + session + userNameSessionMap);
+&nbsp;//        System.out.println(userNameSessionMap.containsKey(userName));
+<b class="nc">&nbsp;        sessionTeamMap.put(session, team);</b>
+&nbsp;//        logger.info(&quot;[onOpen] &quot; + userName);
+<b class="nc">&nbsp;        if (userNameSessionMap.containsKey(userName)) {</b>
+<b class="nc">&nbsp;            session.getBasicRemote().sendText(&quot;Username already exists&quot;);</b>
+<b class="nc">&nbsp;            session.close();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            sessionUserNameMap.put(session, userName);</b>
+<b class="nc">&nbsp;            userNameSessionMap.put(userName, session);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        String teamName = sessionTeamMap.get(session);</b>
+<b class="nc">&nbsp;        Team teamA = teamRepository.findByTeamName(teamName);</b>
+<b class="nc">&nbsp;        List&lt;String&gt; recentAnnouncements = teamA.getAnnouncements();</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Most recent announcements for team &quot; + teamName + &quot;:&quot;);</b>
+<b class="nc">&nbsp;        for (String announcement : recentAnnouncements) {</b>
+<b class="nc">&nbsp;            System.out.println(announcement);</b>
+<b class="nc">&nbsp;            broadcast(teamName, announcement);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param session The WebSocket session representing the client&#39;s connection.
+&nbsp;     * @param message The message received from the client.
+&nbsp;     */
+&nbsp;    @OnMessage
+&nbsp;    public void onMessage(Session session, String message) throws IOException {
+<b class="nc">&nbsp;        String userName = sessionUserNameMap.get(session);</b>
+<b class="nc">&nbsp;        String teamName = sessionTeamMap.get(session);</b>
+&nbsp;//        logger.info(&quot;[onMessage] &quot; + userName + &quot;: &quot; + message);
+&nbsp;//        System.out.println(userName);
+&nbsp;//        System.out.println(userRepository.existsByUserName(userName));
+<b class="nc">&nbsp;        User user = userRepository.findByUserName(userName);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (&quot;Coach&quot;.equals(user.getAccountType())) {</b>
+&nbsp;//            broadcast(teamName, userName + &quot;: &quot; + message);
+<b class="nc">&nbsp;            Team team = teamRepository.findByTeamName(teamName);</b>
+<b class="nc">&nbsp;            team.addAnnouncement(userName + &quot;: &quot; + message);</b>
+<b class="nc">&nbsp;            teamRepository.save(team);</b>
+<b class="nc">&nbsp;            List&lt;String&gt; recentAnnouncements = team.getAnnouncements();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Most recent announcements for team &quot; + teamName + &quot;:&quot;);</b>
+<b class="nc">&nbsp;            for (String announcement : recentAnnouncements) {</b>
+<b class="nc">&nbsp;                System.out.println(announcement);</b>
+<b class="nc">&nbsp;                broadcast(teamName, announcement);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        else {
+&nbsp;//            logger.info(&quot;[onMessage] &quot; + userName + &quot;: attempted to post announcement but is not a coach&quot;);
+<b class="nc">&nbsp;            System.out.println(&quot;Not a coach bozo&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param session The WebSocket session that is being closed.
+&nbsp;     */
+&nbsp;    @OnClose
+&nbsp;    public void onClose(Session session) throws IOException {
+<b class="nc">&nbsp;        String userName = sessionUserNameMap.get(session);</b>
+&nbsp;//        logger.info(&quot;[onClose] &quot; + userName);
+<b class="nc">&nbsp;        sessionUserNameMap.remove(session);</b>
+<b class="nc">&nbsp;        userNameSessionMap.remove(userName);</b>
+<b class="nc">&nbsp;        session.close();</b>
+&nbsp;//        broadcast(userName + &quot; disconnected&quot;);
+<b class="nc">&nbsp;        System.out.println(userName + &quot; disconnected&quot;);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param session   The WebSocket session where the error occurred.
+&nbsp;     * @param throwable The Throwable representing the error condition.
+&nbsp;     */
+&nbsp;    @OnError
+&nbsp;    public void onError(Session session, Throwable throwable) {
+<b class="nc">&nbsp;        String userName = sessionUserNameMap.get(session);</b>
+<b class="nc">&nbsp;        logger.info(&quot;[onError]&quot; + userName + &quot;: &quot; + throwable.getMessage());</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param userName The userName of the recipient.
+&nbsp;     * @param message  The message to be sent.
+&nbsp;     */
+&nbsp;    private void sendMessageToParticularUser(String userName, String message) {
+<b class="nc">&nbsp;        Session session = userNameSessionMap.get(userName);</b>
+<b class="nc">&nbsp;        if (session == null) {</b>
+<b class="nc">&nbsp;            logger.error(&quot;No session found for username: &quot; + userName);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            session.getBasicRemote().sendText(message);</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            logger.info(&quot;[DM Exception] &quot; + e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * @param message The message to be broadcast to all users.
+&nbsp;     */
+&nbsp;    private void broadcast(String team, String message) {
+<b class="nc">&nbsp;        sessionTeamMap.forEach((session, teamName) -&gt; {</b>
+<b class="nc">&nbsp;            if (team.equals(teamName)) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    session.getBasicRemote().sendText(message);</b>
+<b class="nc">&nbsp;                } catch (IOException e) {</b>
+<b class="nc">&nbsp;                    logger.info(&quot;[Broadcast Exception] &quot; + e.getMessage());</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>

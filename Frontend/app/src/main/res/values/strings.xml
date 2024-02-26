@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Top G</string>
+    <string name="error_creating_json">Error creating JSON.</string>
+    <string name="error_invalid_login">Invalid Login. Retype Credentials or make an account</string>
+    <string  name ="error_parsing_json">Error parsing JSON response</string>
+    <string name="error_message">Error: %1$s</string>
+</resources>

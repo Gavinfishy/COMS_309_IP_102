@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF5722"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Top G"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        android:gravity="bottom"
+        android:rotation="-360"
+        android:rotationX="-360"
+        android:rotationY="0"
+        android:scaleX="2"
+        android:scaleY="3"
+        android:text="Welcome to the fitness app"
+        android:translationX="275px"
+        android:translationY="300px"
+        android:visibility="visible" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="3"
+        android:scaleY="3"
+        android:text="Click Here"
+        android:translationX="400px"
+        android:translationY="800px" />
+
+    <!-- Other views can be added below the title as needed -->
+
+</RelativeLayout>

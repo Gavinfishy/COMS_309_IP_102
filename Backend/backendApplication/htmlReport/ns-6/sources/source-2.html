@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GymRatController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">application.GymRat</a>
+</div>
+
+<h1>Coverage Summary for Class: GymRatController (application.GymRat)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GymRatController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (29/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package application.GymRat;
+&nbsp;
+&nbsp;import application.Chart.ChartService;
+&nbsp;import application.Exercise.Exercise;
+&nbsp;import application.Exercise.ExerciseRepository;
+&nbsp;import application.Workout.Workout;
+&nbsp;import application.Workout.WorkoutRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import java.util.List;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class GymRatController {</b>
+&nbsp;    @Autowired
+&nbsp;    GymRatRepository gymRatRepository;
+&nbsp;    @Autowired
+&nbsp;    ExerciseRepository exerciseRepository;
+&nbsp;    @Autowired
+&nbsp;    WorkoutRepository workoutRepository;
+&nbsp;    @Autowired
+&nbsp;    ChartService chartService;
+&nbsp;    GymRatService gymRatService;
+&nbsp;
+<b class="fc">&nbsp;    private final String success = &quot;{\&quot;message\&quot;:\&quot;success\&quot;}&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;    private final String failure = &quot;{\&quot;message\&quot;:\&quot;failure\&quot;}&quot;;</b>
+&nbsp;
+&nbsp;//    @GetMapping(path = &quot;/gymRats&quot;)
+&nbsp;//    List&lt;GymRat&gt; getAllGymRats() {
+&nbsp;//        return gymRatRepository.findAll();
+&nbsp;//    }
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/gymRats/{userName}&quot;)
+&nbsp;    GymRat getGymRatByUserName(@PathVariable String userName) {
+<b class="fc">&nbsp;        return gymRatRepository.findByUserName(userName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/gymRats/{userName}/workoutHistory&quot;)
+&nbsp;    public List&lt;Workout&gt; getWorkoutHistory(@PathVariable String userName) {
+<b class="fc">&nbsp;        GymRat gymRat = gymRatRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        if (gymRat != null) {</b>
+<b class="fc">&nbsp;            return gymRat.getWorkoutHistory();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;GymRat not found&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/gymRats/{userName}/workoutHistory/{exerciseName}&quot;)
+&nbsp;    public List&lt;Workout&gt; getWorkoutHistoryByExercise(@PathVariable String userName, @PathVariable String exerciseName) {
+<b class="fc">&nbsp;        GymRat gymRat = gymRatRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        if (gymRat != null) {</b>
+<b class="fc">&nbsp;            return workoutRepository.findByUserNameAndExerciseName(userName, exerciseName);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;GymRat not found&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;//    @PostMapping(path = &quot;/gymRats&quot;)
+&nbsp;//    String createGymRat(@RequestBody GymRat gymRat) {
+&nbsp;//        if (gymRat == null) {
+&nbsp;//            return failure;
+&nbsp;//        }
+&nbsp;//        gymRatRepository.save(gymRat);
+&nbsp;//        return success;
+&nbsp;//    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/gymRats/assignWorkout&quot;)
+&nbsp;    public void assignWorkout(@RequestBody Workout workout) {
+<b class="fc">&nbsp;        GymRat gymRat = gymRatRepository.findByUserName(workout.getUserName());</b>
+<b class="fc">&nbsp;        if (gymRat != null) {</b>
+<b class="fc">&nbsp;            workoutRepository.save(workout);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/gymRats/logWorkout&quot;)
+&nbsp;    public void logWorkout(@RequestBody Workout workoutInput) {
+<b class="fc">&nbsp;        Workout workout = workoutRepository.findByWorkoutName(workoutInput.getWorkoutName());</b>
+<b class="fc">&nbsp;        if (workout != null) {</b>
+<b class="fc">&nbsp;            workout.logWorkout(workoutInput.getActualReps(), workoutInput.getActualWeight());</b>
+<b class="fc">&nbsp;            workoutRepository.save(workout);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(path = &quot;/gymRats/setHeightWeight&quot;)
+&nbsp;    public GymRat setHeightWeight(@RequestBody GymRat request) {
+<b class="fc">&nbsp;        String userName = request.getUserName();</b>
+<b class="fc">&nbsp;        if (userName == null) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        GymRat gymRat = gymRatRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;        gymRat.setWeight(request.getWeight());</b>
+<b class="fc">&nbsp;        gymRat.setHeight(request.getHeight());</b>
+<b class="fc">&nbsp;        gymRatRepository.save(gymRat);</b>
+<b class="fc">&nbsp;        return gymRatRepository.findByUserName(userName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    @DeleteMapping(path = &quot;/gymRats/{userName}&quot;)
+&nbsp;//    String deleteGymRat(@PathVariable String userName) {
+&nbsp;//        gymRatRepository.deleteByUserName(userName);
+&nbsp;//        return success;
+&nbsp;//    }
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/gymRats/getWorkout/{userName}/{workoutName}&quot;)
+&nbsp;    Workout getWorkout(@PathVariable String userName, @PathVariable String workoutName) {
+<b class="fc">&nbsp;       GymRat gymRat = gymRatRepository.findByUserName(userName);</b>
+<b class="fc">&nbsp;       return gymRat.getWorkout(workoutName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-06 18:00</div>
+</div>
+</body>
+</html>
