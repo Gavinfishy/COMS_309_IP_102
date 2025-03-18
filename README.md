@@ -40,7 +40,7 @@ open command line
 ssh your-netid@coms-309-008.class.las.iastate.edu
 
 ### Running jar
-make sure you are SSH into the VM
+Make sure you are SSH into the VM
 
 cd /tmp
 
@@ -60,10 +60,10 @@ password: 966263656e7aec8b
 ## Authors and acknowledgment
 Frontend:
 
-Eric Hedgren
+Eric Hedgren,
 Gavin Fisher
 
 Backend:
 
-Franck Biyoghe Bi Ndoutoume
+Franck Biyoghe Bi Ndoutoume,
 Max Roher
